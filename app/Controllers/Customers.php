@@ -13,6 +13,6 @@ class CustomerController extends BaseController
         // Kinukuha ang lahat ng records mula sa 'customers' table sa database
         $data['customers'] = $model->findAll();
 
-        return view('pages/customers', $data);
+        return view('customers/index', $data);
     }
 }

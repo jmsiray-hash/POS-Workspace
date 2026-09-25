@@ -13,6 +13,6 @@ class Users extends BaseController
         // Kinukuha ang lahat ng records mula sa 'users' table sa database
         $data['users'] = $model->findAll();
 
-        return view('pages/users', $data);
+        return view('users/index', $data);
     }
 }
