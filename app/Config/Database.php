@@ -26,7 +26,7 @@ class Database extends Config
         'DSN'          => '',
         'hostname'     => 'roundhouse.proxy.rlwy.net',
         'username'     => 'root',
-        'password'     => 'RdwuRLBsmcyPnyqikfvYvPkcfyPPPxiR',
+        'password'     => '',
         'database'     => 'railway',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
@@ -85,26 +85,11 @@ class Database extends Config
     {
         parent::__construct();
 
-        // Dynamically override default settings with environment variables if available
-        if ($hostname = getenv('database.default.hostname') ?: getenv('DB_HOST')) {
-            $this->default['hostname'] = $hostname;
-        }
-
-        if ($username = getenv('database.default.username') ?: getenv('DB_USER')) {
-            $this->default['username'] = $username;
-        }
-
-        if ($password = getenv('database.default.password') ?: getenv('DB_PASS')) {
-            $this->default['password'] = $password;
-        }
-
-        if ($database = getenv('database.default.database') ?: getenv('DB_NAME')) {
-            $this->default['database'] = $database;
-        }
-
-        if ($port = getenv('database.default.port') ?: getenv('DB_PORT')) {
-            $this->default['port'] = (int) $port;
-        }
+        $this->default['hostname'] = getenv('database.default.hostname') ?: getenv('DB_HOST') ?: 'roundhouse.proxy.rlwy.net';
+        $this->default['username'] = getenv('database.default.username') ?: getenv('DB_USER') ?: 'root';
+        $this->default['password'] = getenv('database.default.password') ?: getenv('DB_PASS') ?: '';
+        $this->default['database'] = getenv('database.default.database') ?: getenv('DB_NAME') ?: 'railway';
+        $this->default['port']     = (int) (getenv('database.default.port') ?: getenv('DB_PORT') ?: 14238);
 
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';

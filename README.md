@@ -3,13 +3,13 @@
 
 A CodeIgniter POS application with validated customer and user forms, editing workflows, and avatar upload support.
 
-A database-backed CodeIgniter 4 web application deployed on Render and connected to an Aiven MySQL Cloud Database.
+A database-backed CodeIgniter 4 web application deployed on Render and connected to a Railway MySQL database.
 
 ---
 
 ### 🌐 Live Hosted Links
-- **Customers Page:** [https://pos-workspace.onrender.com/customers](https://pos-workspace.onrender.com/customers)
-- **Users Page:** [https://pos-workspace.onrender.com/users](https://pos-workspace.onrender.com/users)
+- **Customers Page:** [https://pos-workspace-v2.onrender.com/customers](https://pos-workspace-v2.onrender.com/customers)
+- **Users Page:** [https://pos-workspace-v2.onrender.com/users](https://pos-workspace-v2.onrender.com/users)
 
 ---
 
