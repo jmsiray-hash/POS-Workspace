@@ -87,10 +87,7 @@ class Database extends Config
 
         $this->default['hostname'] = 'roundhouse.proxy.rlwy.net';
         $this->default['username'] = 'root';
-        $this->default['password'] = getenv('database.default.password')
-            ?: getenv('DB_PASS')
-            ?: getenv('MYSQLPASSWORD')
-            ?: 'RdwuRLBsmcyPnyqikfvYvPkcfyPPPxiR';
+        $this->default['password'] = 'RdwuRLBsmcyPnyqikfvYvPkcfyPPPxiR';
         $this->default['database'] = 'railway';
         $this->default['port'] = (int) 14238;
 
