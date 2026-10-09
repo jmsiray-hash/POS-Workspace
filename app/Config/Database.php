@@ -101,12 +101,7 @@ class Database extends Config
             ?: getenv('DB_NAME')
             ?: getenv('MYSQLDATABASE')
             ?: 'railway';
-        $this->default['port']     = (int) (
-            getenv('database.default.port')
-            ?: getenv('DB_PORT')
-            ?: getenv('MYSQLPORT')
-            ?: 14238
-        );
+        $this->default['port'] = (int) 14238;
 
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
