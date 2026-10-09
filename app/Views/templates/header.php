@@ -44,9 +44,9 @@
 
 <div class="site-shell">
     <header class="site-header">
-        <a class="brand" href="<?= base_url('home') ?>">POS Workspace</a>
+        <a class="brand" href="<?= base_url('/') ?>">POS Workspace</a>
         <nav aria-label="Primary navigation">
-            <a href="<?= base_url('home') ?>">Home</a>
+            <a href="<?= base_url('/') ?>">Home</a>
             <a href="<?= base_url('about') ?>">About</a>
             <a href="<?= base_url('customers') ?>">Customers</a>
             <a href="<?= base_url('users') ?>">Users</a>
