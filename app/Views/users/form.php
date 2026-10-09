@@ -38,7 +38,7 @@
 
         <div class="form-actions">
             <button type="submit"><?= $mode === 'edit' ? 'Update User' : 'Save User' ?></button>
-            <a href="<?= site_url('users') ?>" class="button button-secondary">Cancel</a>
+            <a href="<?= base_url('users') ?>" class="button button-secondary">Cancel</a>
         </div>
     </form>
 </div>

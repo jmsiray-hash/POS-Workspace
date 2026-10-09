@@ -3,7 +3,7 @@
 <div class="container mt-4">
     <div class="page-header">
         <h2>Customer List</h2>
-        <a href="<?= site_url('customers/new') ?>" class="primary-button">Add New Customer</a>
+        <a href="<?= base_url('customers/new') ?>" class="primary-button">Add New Customer</a>
     </div>
 
     <?php if (session()->getFlashdata('success')): ?>
@@ -31,7 +31,7 @@
                         <td><?= esc($customer['phone']) ?></td>
                         <td><?= esc($customer['created_at']) ?></td>
                         <td>
-                            <a href="<?= site_url('customers/edit/' . $customer['id']) ?>" class="action-link">Edit</a>
+                            <a href="<?= base_url('customers/edit/' . $customer['id']) ?>" class="action-link">Edit</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

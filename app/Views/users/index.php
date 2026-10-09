@@ -3,7 +3,7 @@
 <div class="container mt-4">
     <div class="page-header">
         <h2>User List</h2>
-        <a href="<?= site_url('users/new') ?>" class="primary-button">Add New User</a>
+        <a href="<?= base_url('users/new') ?>" class="primary-button">Add New User</a>
     </div>
 
     <?php if (session()->getFlashdata('success')): ?>
@@ -32,7 +32,7 @@
                         <td><?= esc($user['full_name']) ?></td>
                         <td><?= esc($user['created_at']) ?></td>
                         <td>
-                            <a href="<?= site_url('users/edit/' . $user['id']) ?>" class="action-link">Edit</a>
+                            <a href="<?= base_url('users/edit/' . $user['id']) ?>" class="action-link">Edit</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
