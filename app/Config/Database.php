@@ -26,7 +26,7 @@ class Database extends Config
         'DSN'          => '',
         'hostname'     => 'roundhouse.proxy.rlwy.net',
         'username'     => 'root',
-        'password'     => '',
+        'password'     => 'RdwuRLBsmcyPnyqikfvYvPkcfyPPPxiR',
         'database'     => 'railway',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
@@ -85,11 +85,28 @@ class Database extends Config
     {
         parent::__construct();
 
-        $this->default['hostname'] = getenv('database.default.hostname') ?: getenv('DB_HOST') ?: 'roundhouse.proxy.rlwy.net';
-        $this->default['username'] = getenv('database.default.username') ?: getenv('DB_USER') ?: 'root';
-        $this->default['password'] = getenv('database.default.password') ?: getenv('DB_PASS') ?: '';
-        $this->default['database'] = getenv('database.default.database') ?: getenv('DB_NAME') ?: 'railway';
-        $this->default['port']     = (int) (getenv('database.default.port') ?: getenv('DB_PORT') ?: 14238);
+        $this->default['hostname'] = getenv('database.default.hostname')
+            ?: getenv('DB_HOST')
+            ?: getenv('MYSQLHOST')
+            ?: 'roundhouse.proxy.rlwy.net';
+        $this->default['username'] = getenv('database.default.username')
+            ?: getenv('DB_USER')
+            ?: getenv('MYSQLUSER')
+            ?: 'root';
+        $this->default['password'] = getenv('database.default.password')
+            ?: getenv('DB_PASS')
+            ?: getenv('MYSQLPASSWORD')
+            ?: 'RdwuRLBsmcyPnyqikfvYvPkcfyPPPxiR';
+        $this->default['database'] = getenv('database.default.database')
+            ?: getenv('DB_NAME')
+            ?: getenv('MYSQLDATABASE')
+            ?: 'railway';
+        $this->default['port']     = (int) (
+            getenv('database.default.port')
+            ?: getenv('DB_PORT')
+            ?: getenv('MYSQLPORT')
+            ?: 14238
+        );
 
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
