@@ -24,10 +24,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'roundhouse.proxy.rlwy.net',
-        'username'     => 'root',
-        'password'     => 'RdwuRLBsmcyPnyqikfvYvPkcfyPPPxiR',
-        'database'     => 'railway',
+        'hostname'     => 'mysql-3af8d409-gsiray49-3918.k.aivencloud.com',
+        'username'     => 'avnadmin',
+        'password'     => 'AVNS_6oduRy3fzhjOW0yOzkn',
+        'database'     => 'defaultdb',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -35,11 +35,13 @@ class Database extends Config
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
         'swapPre'      => '',
-        'encrypt'      => false,
+        'encrypt'      => [
+            'ssl_verify' => false,
+        ],
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => 14238,
+        'port'         => 14702,
         'numberNative' => false,
         'foundRows'    => false,
         'dateFormat'   => [
@@ -85,11 +87,14 @@ class Database extends Config
     {
         parent::__construct();
 
-        $this->default['hostname'] = 'roundhouse.proxy.rlwy.net';
-        $this->default['username'] = 'root';
-        $this->default['password'] = 'RdwuRLBsmcyPnyqikfvYvPkcfyPPPxiR';
-        $this->default['database'] = 'railway';
-        $this->default['port'] = (int) 14238;
+        $this->default['hostname'] = 'mysql-3af8d409-gsiray49-3918.k.aivencloud.com';
+        $this->default['username'] = 'avnadmin';
+        $this->default['password'] = 'AVNS_6oduRy3fzhjOW0yOzkn';
+        $this->default['database'] = 'defaultdb';
+        $this->default['port'] = (int) 14702;
+        $this->default['encrypt'] = [
+            'ssl_verify' => false,
+        ];
 
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
