@@ -200,12 +200,4 @@ class App extends BaseConfig
      */
     public bool $CSPEnabled = false;
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->baseURL = getenv('app.baseURL')
-            ?: getenv('APP_BASE_URL')
-            ?: 'https://pos-workspace-v2.onrender.com/';
-    }
 }

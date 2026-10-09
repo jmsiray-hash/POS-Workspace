@@ -85,22 +85,13 @@ class Database extends Config
     {
         parent::__construct();
 
-        $this->default['hostname'] = getenv('database.default.hostname')
-            ?: getenv('DB_HOST')
-            ?: getenv('MYSQLHOST')
-            ?: 'roundhouse.proxy.rlwy.net';
-        $this->default['username'] = getenv('database.default.username')
-            ?: getenv('DB_USER')
-            ?: getenv('MYSQLUSER')
-            ?: 'root';
+        $this->default['hostname'] = 'roundhouse.proxy.rlwy.net';
+        $this->default['username'] = 'root';
         $this->default['password'] = getenv('database.default.password')
             ?: getenv('DB_PASS')
             ?: getenv('MYSQLPASSWORD')
             ?: 'RdwuRLBsmcyPnyqikfvYvPkcfyPPPxiR';
-        $this->default['database'] = getenv('database.default.database')
-            ?: getenv('DB_NAME')
-            ?: getenv('MYSQLDATABASE')
-            ?: 'railway';
+        $this->default['database'] = 'railway';
         $this->default['port'] = (int) 14238;
 
         if (ENVIRONMENT === 'testing') {
