@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     full_name VARCHAR(100) NOT NULL,
+    avatar VARCHAR(255) NULL,
     created_at DATETIME NOT NULL
 );
 
@@ -20,9 +21,9 @@ INSERT INTO customers (full_name, email, phone, created_at) VALUES
 ('Andres Bonifacio', 'andres@example.com', '09204567890', NOW()),
 ('Gregoria De Jesus', 'gregoria@example.com', '09215678901', NOW());
 
-INSERT INTO users (username, full_name, created_at) VALUES
-('admin_juan', 'Juan Dela Cruz', NOW()),
-('cashier_maria', 'Maria Clara', NOW()),
-('manager_ibarra', 'Crisostomo Ibarra', NOW()),
-('supervisor_andres', 'Andres Bonifacio', NOW()),
-('staff_gregoria', 'Gregoria De Jesus', NOW());
+INSERT INTO users (username, full_name, avatar, created_at) VALUES
+('admin_juan', 'Juan Dela Cruz', NULL, NOW()),
+('cashier_maria', 'Maria Clara', NULL, NOW()),
+('manager_ibarra', 'Crisostomo Ibarra', NULL, NOW()),
+('supervisor_andres', 'Andres Bonifacio', NULL, NOW()),
+('staff_gregoria', 'Gregoria De Jesus', NULL, NOW());

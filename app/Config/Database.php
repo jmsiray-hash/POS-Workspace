@@ -35,9 +35,7 @@ class Database extends Config
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
         'swapPre'      => '',
-        'encrypt'      => [
-            'ssl_verify' => false,
-        ],
+        'encrypt'      => false,
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
@@ -86,16 +84,6 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
-
-        // PIPILITIN NITO ANG TAMANG CREDENTIALS AT SSL OVERRIDE PAGKATAPOS BASAHIN ANG ENV
-        $this->default['hostname'] = 'mysql-3af8d409-gsiray49-3918.k.aivencloud.com';
-        $this->default['username'] = 'avnadmin';
-        $this->default['password'] = 'AVNS_6oduRy3fzhjOW0yOzkn';
-        $this->default['database'] = 'defaultdb';
-        $this->default['port']     = 14702;
-        $this->default['encrypt']  = [
-            'ssl_verify' => false,
-        ];
 
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';

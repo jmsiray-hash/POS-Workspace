@@ -23,8 +23,21 @@
         .table-wrap { overflow-x: auto; }
         th, td { border-bottom: 1px solid var(--line); padding: 14px 12px; text-align: left; }
         th { background: var(--wash); color: var(--brand-dark); font-size: .85rem; letter-spacing: .04em; text-transform: uppercase; }
+        .page-header { align-items: center; display: flex; gap: 16px; justify-content: space-between; margin-bottom: 20px; }
+        .primary-button, .button { background: var(--brand); border: 0; border-radius: 6px; color: #fff; display: inline-block; font-weight: 600; padding: 10px 18px; text-decoration: none; }
+        .button-secondary { background: #e2e8f0; color: var(--ink); }
+        .action-link { color: var(--brand-dark); font-weight: 600; text-decoration: none; }
+        .alert { border-radius: 6px; margin-bottom: 18px; padding: 12px 14px; }
+        .alert-success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+        .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; }
+        input[type="text"], input[type="email"], input[type="file"] { border: 1px solid var(--line); border-radius: 6px; font: inherit; padding: 10px 12px; width: min(100%, 480px); }
+        .form-actions { align-items: center; display: flex; gap: 12px; margin-top: 24px; }
+        .current-avatar, .thumbnail { align-items: center; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; display: inline-flex; height: 64px; justify-content: center; margin-top: 8px; overflow: hidden; width: 64px; }
+        .thumbnail { height: 46px; width: 46px; }
         footer { color: var(--muted); font-size: .9rem; padding: 20px 0; }
-        @media (max-width: 640px) { .site-header { align-items: flex-start; flex-direction: column; gap: 12px; } .site-shell { padding: 16px; } }
+        @media (max-width: 640px) { .site-header { align-items: flex-start; flex-direction: column; gap: 12px; } .site-shell { padding: 16px; } .page-header { align-items: flex-start; flex-direction: column; } }
     </style>
 </head>
 <body>
