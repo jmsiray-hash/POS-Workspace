@@ -87,12 +87,11 @@ class Database extends Config
     {
         parent::__construct();
 
-        $this->default['hostname'] = getenv('database.default.hostname')
-            ?: 'mysql-3af8d409-gsiray49-3918.k.aivencloud.com';
-        $this->default['username'] = getenv('database.default.username') ?: 'avnadmin';
-        $this->default['password'] = getenv('database.default.password') ?: 'AVNS_6oduRy3fzhjOW0yOzkn';
-        $this->default['database'] = getenv('database.default.database') ?: 'defaultdb';
-        $this->default['port'] = (int) (getenv('database.default.port') ?: 14702);
+        $this->default['hostname'] = 'mysql-3af8d409-gsiray49-3918.k.aivencloud.com';
+        $this->default['username'] = 'avnadmin';
+        $this->default['password'] = 'AVNS_6oduRy3fzhjOW0yOzkn';
+        $this->default['database'] = 'defaultdb';
+        $this->default['port'] = (int) 14702;
         $this->default['encrypt'] = [
             'ssl_verify' => false,
         ];
