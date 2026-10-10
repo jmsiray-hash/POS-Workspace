@@ -2,38 +2,29 @@
 
 <div class="container mt-4">
     <div class="page-heading">
-        <h2>Customer List</h2>
-        <a class="button" href="<?= base_url('customers/new') ?>">Add Customer</a>
+        <h2>Customers</h2>
     </div>
-    <?php if (session()->getFlashdata('message')): ?><p class="alert success"><?= esc(session()->getFlashdata('message')) ?></p><?php endif; ?>
-    <?php if (session()->getFlashdata('error')): ?><p class="alert error"><?= esc(session()->getFlashdata('error')) ?></p><?php endif; ?>
     <div class="table-wrap">
     <table class="table table-striped table-bordered mt-3">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Created At</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($customers) && is_array($customers)): ?>
+            <?php if (!empty($customers)): ?>
                 <?php foreach ($customers as $customer): ?>
                     <tr>
-                        <td><?= esc($customer['id']) ?></td>
                         <td><?= esc($customer['full_name']) ?></td>
                         <td><?= esc($customer['email']) ?></td>
                         <td><?= esc($customer['phone']) ?></td>
-                        <td><?= esc($customer['created_at']) ?></td>
-                        <td><a href="<?= base_url('customers/' . $customer['id'] . '/edit') ?>">Edit</a></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="6" class="text-center">No customers found.</td>
+                    <td colspan="3" class="text-center">No customers found.</td>
                 </tr>
             <?php endif; ?>
         </tbody>

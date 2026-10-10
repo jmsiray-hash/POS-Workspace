@@ -8,8 +8,18 @@ class Users extends BaseController
 {
     public function index()
     {
-        $model = new UserModel();
-        return view('users/index', ['users' => $model->findAll()]);
+        $users = [
+            ['username' => 'asantos', 'full_name' => 'Avery Santos', 'role' => 'Administrator'],
+            ['username' => 'jreyes', 'full_name' => 'Jordan Reyes', 'role' => 'Manager'],
+            ['username' => 'mcruz', 'full_name' => 'Morgan Cruz', 'role' => 'Cashier'],
+            ['username' => 'clim', 'full_name' => 'Casey Lim', 'role' => 'Inventory Clerk'],
+            ['username' => 'tgarcia', 'full_name' => 'Taylor Garcia', 'role' => 'Cashier'],
+        ];
+
+        return view('users/index', [
+            'title' => 'Users',
+            'users' => $users,
+        ]);
     }
 
     public function newUser()

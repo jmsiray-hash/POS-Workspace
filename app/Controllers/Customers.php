@@ -8,9 +8,18 @@ class Customers extends BaseController
 {
     public function index()
     {
-        $model = new CustomerModel();
+        $customers = [
+            ['full_name' => 'Avery Santos', 'email' => 'avery.santos@example.com', 'phone' => '202-555-0101'],
+            ['full_name' => 'Jordan Reyes', 'email' => 'jordan.reyes@example.com', 'phone' => '202-555-0102'],
+            ['full_name' => 'Morgan Cruz', 'email' => 'morgan.cruz@example.com', 'phone' => '202-555-0103'],
+            ['full_name' => 'Casey Lim', 'email' => 'casey.lim@example.com', 'phone' => '202-555-0104'],
+            ['full_name' => 'Taylor Garcia', 'email' => 'taylor.garcia@example.com', 'phone' => '202-555-0105'],
+        ];
 
-        return view('customers/index', ['customers' => $model->findAll()]);
+        return view('customers/index', [
+            'title' => 'Customers',
+            'customers' => $customers,
+        ]);
     }
 
     public function newCustomer()
