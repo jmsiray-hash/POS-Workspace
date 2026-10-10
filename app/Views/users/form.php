@@ -14,8 +14,8 @@
         <input id="username" name="username" value="<?= old('username', $user['username'] ?? '') ?>" required>
     </div>
     <div class="form-group">
-        <label for="name">Name</label>
-        <input id="name" name="name" value="<?= old('name', $user['full_name'] ?? '') ?>" required>
+        <label for="full_name">Full name</label>
+        <input id="full_name" name="full_name" value="<?= old('full_name', $user['full_name'] ?? '') ?>" required>
     </div>
     <div class="form-group">
         <label for="avatar">Profile picture (JPG or PNG, max 2MB)</label>

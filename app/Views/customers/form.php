@@ -10,8 +10,8 @@
 <form action="<?= esc($action) ?>" method="post">
     <?= csrf_field() ?>
     <div class="form-group">
-        <label for="name">Name</label>
-        <input id="name" name="name" value="<?= old('name', $customer['full_name'] ?? '') ?>" required>
+        <label for="full_name">Full name</label>
+        <input id="full_name" name="full_name" value="<?= old('full_name', $customer['full_name'] ?? '') ?>" required>
     </div>
     <div class="form-group">
         <label for="email">Email</label>

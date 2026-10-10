@@ -19,7 +19,7 @@ class Customers extends BaseController
             'title' => 'Add Customer',
             'action' => base_url('customers/create'),
             'customer' => [
-                'full_name' => $this->request->getPost('name'),
+                'full_name' => $this->request->getPost('full_name'),
                 'email' => $this->request->getPost('email'),
                 'phone' => $this->request->getPost('phone'),
             ],
@@ -29,7 +29,7 @@ class Customers extends BaseController
     public function create()
     {
         $rules = [
-            'name' => 'required',
+            'full_name' => 'required',
             'email' => 'required|valid_email',
         ];
 
@@ -38,7 +38,7 @@ class Customers extends BaseController
                 'title' => 'Add Customer',
                 'action' => base_url('customers/create'),
                 'customer' => [
-                    'full_name' => $this->request->getPost('name'),
+                    'full_name' => $this->request->getPost('full_name'),
                     'email' => $this->request->getPost('email'),
                     'phone' => $this->request->getPost('phone'),
                 ],
@@ -48,7 +48,7 @@ class Customers extends BaseController
 
         $model = new CustomerModel();
         $model->insert([
-            'full_name' => $this->request->getPost('name'),
+            'full_name' => $this->request->getPost('full_name'),
             'email' => $this->request->getPost('email'),
             'phone' => $this->request->getPost('phone'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -75,7 +75,7 @@ class Customers extends BaseController
     public function update(int $id)
     {
         $rules = [
-            'name' => 'required',
+            'full_name' => 'required',
             'email' => 'required|valid_email',
         ];
 
@@ -84,7 +84,7 @@ class Customers extends BaseController
                 'title' => 'Edit Customer',
                 'action' => base_url('customers/' . $id . '/update'),
                 'customer' => [
-                    'full_name' => $this->request->getPost('name'),
+                    'full_name' => $this->request->getPost('full_name'),
                     'email' => $this->request->getPost('email'),
                     'phone' => $this->request->getPost('phone'),
                 ],
@@ -98,7 +98,7 @@ class Customers extends BaseController
         }
 
         $model->update($id, [
-            'full_name' => $this->request->getPost('name'),
+            'full_name' => $this->request->getPost('full_name'),
             'email' => $this->request->getPost('email'),
             'phone' => $this->request->getPost('phone'),
         ]);

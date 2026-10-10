@@ -19,7 +19,7 @@ class Users extends BaseController
             'action' => base_url('users/create'),
             'user' => [
                 'username' => $this->request->getPost('username'),
-                'full_name' => $this->request->getPost('name'),
+                'full_name' => $this->request->getPost('full_name'),
             ],
         ]);
     }
@@ -28,7 +28,7 @@ class Users extends BaseController
     {
         $rules = [
             'username' => 'required|is_unique[users.username]',
-            'name' => 'required',
+            'full_name' => 'required',
             'avatar' => 'permit_empty|uploaded[avatar]|is_image[avatar]|mime_in[avatar,image/jpg,image/jpeg,image/png]|max_size[avatar,2048]',
         ];
 
@@ -38,7 +38,7 @@ class Users extends BaseController
                 'action' => base_url('users/create'),
                 'user' => [
                     'username' => $this->request->getPost('username'),
-                    'full_name' => $this->request->getPost('name'),
+                    'full_name' => $this->request->getPost('full_name'),
                 ],
                 'validation' => $this->validator,
             ]);
@@ -51,7 +51,7 @@ class Users extends BaseController
 
         (new UserModel())->insert([
             'username' => $this->request->getPost('username'),
-            'full_name' => $this->request->getPost('name'),
+            'full_name' => $this->request->getPost('full_name'),
             'avatar' => $avatar,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
@@ -85,7 +85,7 @@ class Users extends BaseController
 
         $rules = [
             'username' => 'required|is_unique[users.username,id,' . $id . ']',
-            'name' => 'required',
+            'full_name' => 'required',
             'avatar' => 'permit_empty|uploaded[avatar]|is_image[avatar]|mime_in[avatar,image/jpg,image/jpeg,image/png]|max_size[avatar,2048]',
         ];
 
@@ -95,7 +95,7 @@ class Users extends BaseController
                 'action' => base_url('users/' . $id . '/update'),
                 'user' => [
                     'username' => $this->request->getPost('username'),
-                    'full_name' => $this->request->getPost('name'),
+                    'full_name' => $this->request->getPost('full_name'),
                     'avatar' => $user['avatar'] ?? null,
                 ],
                 'validation' => $this->validator,
@@ -109,7 +109,7 @@ class Users extends BaseController
 
         $data = [
             'username' => $this->request->getPost('username'),
-            'full_name' => $this->request->getPost('name'),
+            'full_name' => $this->request->getPost('full_name'),
         ];
 
         if ($avatar !== null) {
