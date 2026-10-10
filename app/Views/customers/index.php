@@ -1,15 +1,13 @@
 <?= $this->include('templates/header') ?>
 
 <div class="container mt-4">
-    <div class="page-header">
+    <div class="page-heading">
         <h2>Customer List</h2>
-        <a href="<?= base_url('customers/new') ?>" class="primary-button">Add New Customer</a>
+        <a class="button" href="<?= base_url('customers/new') ?>">Add Customer</a>
     </div>
-
-    <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
-    <?php endif; ?>
-
+    <?php if (session()->getFlashdata('message')): ?><p class="alert success"><?= esc(session()->getFlashdata('message')) ?></p><?php endif; ?>
+    <?php if (session()->getFlashdata('error')): ?><p class="alert error"><?= esc(session()->getFlashdata('error')) ?></p><?php endif; ?>
+    <div class="table-wrap">
     <table class="table table-striped table-bordered mt-3">
         <thead class="table-dark">
             <tr>
@@ -30,9 +28,7 @@
                         <td><?= esc($customer['email']) ?></td>
                         <td><?= esc($customer['phone']) ?></td>
                         <td><?= esc($customer['created_at']) ?></td>
-                        <td>
-                            <a href="<?= base_url('customers/edit/' . $customer['id']) ?>" class="action-link">Edit</a>
-                        </td>
+                        <td><a href="<?= base_url('customers/' . $customer['id'] . '/edit') ?>">Edit</a></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -42,6 +38,7 @@
             <?php endif; ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <?= $this->include('templates/footer') ?>

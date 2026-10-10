@@ -3,105 +3,106 @@
 namespace App\Controllers;
 
 use App\Models\CustomerModel;
-use CodeIgniter\Exceptions\PageNotFoundException;
 
 class Customers extends BaseController
 {
     public function index()
     {
         $model = new CustomerModel();
-        $data['customers'] = $model->orderBy('id', 'ASC')->findAll();
 
-        return view('customers/index', $data);
+        return view('customers/index', ['customers' => $model->findAll()]);
     }
 
-    public function new()
+    public function newCustomer()
     {
         return view('customers/form', [
-            'customer' => [],
-            'errors' => [],
-            'mode' => 'create',
             'title' => 'Add Customer',
+            'action' => base_url('customers/create'),
+            'customer' => [
+                'full_name' => $this->request->getPost('name'),
+                'email' => $this->request->getPost('email'),
+                'phone' => $this->request->getPost('phone'),
+            ],
         ]);
     }
 
     public function create()
     {
-        $data = [
-            'full_name' => $this->request->getPost('full_name'),
-            'email' => $this->request->getPost('email'),
-            'phone' => $this->request->getPost('phone'),
-        ];
-
         $rules = [
-            'full_name' => 'required|min_length[2]|max_length[100]',
-            'email' => 'required|valid_email|max_length[100]',
+            'name' => 'required',
+            'email' => 'required|valid_email',
         ];
 
         if (! $this->validate($rules)) {
             return view('customers/form', [
-                'customer' => $data,
-                'errors' => $this->validator->getErrors(),
-                'mode' => 'create',
                 'title' => 'Add Customer',
+                'action' => base_url('customers/create'),
+                'customer' => [
+                    'full_name' => $this->request->getPost('name'),
+                    'email' => $this->request->getPost('email'),
+                    'phone' => $this->request->getPost('phone'),
+                ],
+                'validation' => $this->validator,
             ]);
         }
 
-        $data['created_at'] = date('Y-m-d H:i:s');
-
         $model = new CustomerModel();
-        $model->insert($data);
+        $model->insert([
+            'full_name' => $this->request->getPost('name'),
+            'email' => $this->request->getPost('email'),
+            'phone' => $this->request->getPost('phone'),
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
 
-        return redirect()->to('/customers')->with('success', 'Customer created successfully.');
+        return redirect()->to(base_url('customers'))->with('message', 'Customer added successfully.');
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
-        $model = new CustomerModel();
-        $customer = $model->find($id);
+        $customer = (new CustomerModel())->find($id);
 
         if ($customer === null) {
-            throw new PageNotFoundException('Customer not found');
+            return redirect()->to(base_url('customers'))->with('error', 'Customer not found.');
         }
 
         return view('customers/form', [
-            'customer' => $customer,
-            'errors' => [],
-            'mode' => 'edit',
             'title' => 'Edit Customer',
+            'action' => base_url('customers/' . $id . '/update'),
+            'customer' => $customer,
         ]);
     }
 
-    public function update($id)
+    public function update(int $id)
     {
-        $model = new CustomerModel();
-
-        if ($model->find($id) === null) {
-            throw new PageNotFoundException('Customer not found');
-        }
-
-        $data = [
-            'full_name' => $this->request->getPost('full_name'),
-            'email' => $this->request->getPost('email'),
-            'phone' => $this->request->getPost('phone'),
-        ];
-
         $rules = [
-            'full_name' => 'required|min_length[2]|max_length[100]',
-            'email' => 'required|valid_email|max_length[100]',
+            'name' => 'required',
+            'email' => 'required|valid_email',
         ];
 
         if (! $this->validate($rules)) {
             return view('customers/form', [
-                'customer' => array_merge(['id' => $id], $data),
-                'errors' => $this->validator->getErrors(),
-                'mode' => 'edit',
                 'title' => 'Edit Customer',
+                'action' => base_url('customers/' . $id . '/update'),
+                'customer' => [
+                    'full_name' => $this->request->getPost('name'),
+                    'email' => $this->request->getPost('email'),
+                    'phone' => $this->request->getPost('phone'),
+                ],
+                'validation' => $this->validator,
             ]);
         }
 
-        $model->update($id, $data);
+        $model = new CustomerModel();
+        if ($model->find($id) === null) {
+            return redirect()->to(base_url('customers'))->with('error', 'Customer not found.');
+        }
 
-        return redirect()->to('/customers')->with('success', 'Customer updated successfully.');
+        $model->update($id, [
+            'full_name' => $this->request->getPost('name'),
+            'email' => $this->request->getPost('email'),
+            'phone' => $this->request->getPost('phone'),
+        ]);
+
+        return redirect()->to(base_url('customers'))->with('message', 'Customer updated successfully.');
     }
 }

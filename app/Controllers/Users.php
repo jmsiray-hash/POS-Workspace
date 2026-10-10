@@ -3,159 +3,155 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use CodeIgniter\Exceptions\PageNotFoundException;
 
 class Users extends BaseController
 {
     public function index()
     {
         $model = new UserModel();
-        $data['users'] = $model->orderBy('id', 'ASC')->findAll();
-
-        return view('users/index', $data);
+        return view('users/index', ['users' => $model->findAll()]);
     }
 
-    public function new()
+    public function newUser()
     {
         return view('users/form', [
-            'user' => [],
-            'errors' => [],
-            'mode' => 'create',
             'title' => 'Add User',
+            'action' => base_url('users/create'),
+            'user' => [
+                'username' => $this->request->getPost('username'),
+                'full_name' => $this->request->getPost('name'),
+            ],
         ]);
     }
 
     public function create()
     {
-        $data = [
-            'username' => trim((string) $this->request->getPost('username')),
-            'full_name' => trim((string) $this->request->getPost('full_name')),
-        ];
-
         $rules = [
-            'username' => 'required|min_length[3]|max_length[50]|is_unique[users.username]',
-            'full_name' => 'required|min_length[2]|max_length[100]',
+            'username' => 'required|is_unique[users.username]',
+            'name' => 'required',
+            'avatar' => 'permit_empty|uploaded[avatar]|is_image[avatar]|mime_in[avatar,image/jpg,image/jpeg,image/png]|max_size[avatar,2048]',
         ];
 
         if (! $this->validate($rules)) {
             return view('users/form', [
-                'user' => $data,
-                'errors' => $this->validator->getErrors(),
-                'mode' => 'create',
                 'title' => 'Add User',
+                'action' => base_url('users/create'),
+                'user' => [
+                    'username' => $this->request->getPost('username'),
+                    'full_name' => $this->request->getPost('name'),
+                ],
+                'validation' => $this->validator,
             ]);
         }
 
-        $data['created_at'] = date('Y-m-d H:i:s');
+        $avatar = $this->storeAvatar();
+        if ($avatar instanceof \CodeIgniter\HTTP\RedirectResponse) {
+            return $avatar;
+        }
 
-        $model = new UserModel();
-        $model->insert($data);
+        (new UserModel())->insert([
+            'username' => $this->request->getPost('username'),
+            'full_name' => $this->request->getPost('name'),
+            'avatar' => $avatar,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
 
-        return redirect()->to('/users')->with('success', 'User created successfully.');
+        return redirect()->to(base_url('users'))->with('message', 'User added successfully.');
     }
 
-    public function edit($id)
+    public function edit(int $id)
+    {
+        $user = (new UserModel())->find($id);
+
+        if ($user === null) {
+            return redirect()->to(base_url('users'))->with('error', 'User not found.');
+        }
+
+        return view('users/form', [
+            'title' => 'Edit User',
+            'action' => base_url('users/' . $id . '/update'),
+            'user' => $user,
+        ]);
+    }
+
+    public function update(int $id)
     {
         $model = new UserModel();
         $user = $model->find($id);
 
         if ($user === null) {
-            throw new PageNotFoundException('User not found');
+            return redirect()->to(base_url('users'))->with('error', 'User not found.');
         }
-
-        return view('users/form', [
-            'user' => $user,
-            'errors' => [],
-            'mode' => 'edit',
-            'title' => 'Edit User',
-        ]);
-    }
-
-    public function update($id)
-    {
-        $model = new UserModel();
-
-        if ($model->find($id) === null) {
-            throw new PageNotFoundException('User not found');
-        }
-
-        $userData = [
-            'username' => trim((string) $this->request->getPost('username')),
-            'full_name' => trim((string) $this->request->getPost('full_name')),
-        ];
 
         $rules = [
-            'username' => 'required|min_length[3]|max_length[50]|is_unique[users.username,id,' . (int) $id . ']',
-            'full_name' => 'required|min_length[2]|max_length[100]',
+            'username' => 'required|is_unique[users.username,id,' . $id . ']',
+            'name' => 'required',
+            'avatar' => 'permit_empty|uploaded[avatar]|is_image[avatar]|mime_in[avatar,image/jpg,image/jpeg,image/png]|max_size[avatar,2048]',
         ];
-
-        $avatarFile = $this->request->getFile('avatar');
-        $avatarName = null;
-
-        if ($avatarFile !== null && $avatarFile->isValid() && ! $avatarFile->hasMoved()) {
-            $allowedMimeTypes = ['image/jpeg', 'image/png'];
-            $maxSize = 2 * 1024 * 1024;
-
-            if (! in_array($avatarFile->getClientMimeType(), $allowedMimeTypes, true)) {
-                return view('users/form', [
-                    'user' => array_merge(['id' => $id], $userData),
-                    'errors' => ['avatar' => 'The avatar must be a JPG or PNG image.'],
-                    'mode' => 'edit',
-                    'title' => 'Edit User',
-                ]);
-            }
-
-            if ($avatarFile->getSize() > $maxSize) {
-                return view('users/form', [
-                    'user' => array_merge(['id' => $id], $userData),
-                    'errors' => ['avatar' => 'The avatar must not exceed 2MB.'],
-                    'mode' => 'edit',
-                    'title' => 'Edit User',
-                ]);
-            }
-
-            $uploadDir = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'avatars';
-            if (! is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            $avatarName = $avatarFile->getRandomName();
-            $avatarFile->move($uploadDir, $avatarName);
-
-            $image = \Config\Services::image()
-                ->withFile($uploadDir . DIRECTORY_SEPARATOR . $avatarName)
-                ->resize(200, 200, true, 'auto');
-
-            $preparedName = 'thumb_' . $avatarName;
-            $image->save($uploadDir . DIRECTORY_SEPARATOR . $preparedName);
-            $avatarName = $preparedName;
-
-            if ($existingUser = $model->find($id)) {
-                $oldAvatar = $existingUser['avatar'] ?? null;
-                if ($oldAvatar && $oldAvatar !== 'default-avatar.svg' && file_exists($uploadDir . DIRECTORY_SEPARATOR . $oldAvatar)) {
-                    unlink($uploadDir . DIRECTORY_SEPARATOR . $oldAvatar);
-                }
-            }
-        }
 
         if (! $this->validate($rules)) {
             return view('users/form', [
-                'user' => array_merge(['id' => $id], $userData),
-                'errors' => $this->validator->getErrors(),
-                'mode' => 'edit',
                 'title' => 'Edit User',
+                'action' => base_url('users/' . $id . '/update'),
+                'user' => [
+                    'username' => $this->request->getPost('username'),
+                    'full_name' => $this->request->getPost('name'),
+                    'avatar' => $user['avatar'] ?? null,
+                ],
+                'validation' => $this->validator,
             ]);
         }
 
-        $existingUser = $model->find($id);
-        $avatarName = $avatarName ?? ($existingUser['avatar'] ?? null);
-
-        if ($avatarName !== null) {
-            $userData['avatar'] = $avatarName;
+        $avatar = $this->storeAvatar();
+        if ($avatar instanceof \CodeIgniter\HTTP\RedirectResponse) {
+            return $avatar;
         }
 
-        $model->update($id, $userData);
+        $data = [
+            'username' => $this->request->getPost('username'),
+            'full_name' => $this->request->getPost('name'),
+        ];
 
-        return redirect()->to('/users')->with('success', 'User updated successfully.');
+        if ($avatar !== null) {
+            $this->deleteAvatar($user['avatar'] ?? null);
+            $data['avatar'] = $avatar;
+        }
+
+        $model->update($id, $data);
+
+        return redirect()->to(base_url('users'))->with('message', 'User updated successfully.');
+    }
+
+    private function storeAvatar(): string|\CodeIgniter\HTTP\RedirectResponse|null
+    {
+        $file = $this->request->getFile('avatar');
+
+        if ($file === null || $file->getError() === UPLOAD_ERR_NO_FILE) {
+            return null;
+        }
+
+        if (! $file->isValid()) {
+            return redirect()->back()->withInput()->with('error', $file->getErrorString());
+        }
+
+        $directory = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'avatars';
+        if (! is_dir($directory) && ! mkdir($directory, 0755, true) && ! is_dir($directory)) {
+            return redirect()->back()->withInput()->with('error', 'Unable to create the avatar upload directory.');
+        }
+
+        $filename = $file->getRandomName();
+        $file->move($directory, $filename);
+
+        return $filename;
+    }
+
+    private function deleteAvatar(?string $filename): void
+    {
+        if ($filename !== null && basename($filename) === $filename) {
+            $path = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'avatars' . DIRECTORY_SEPARATOR . $filename;
+            if (is_file($path)) {
+                unlink($path);
+            }
+        }
     }
 }

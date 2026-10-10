@@ -1,41 +1,28 @@
 <?= $this->include('templates/header') ?>
 
-<div class="container mt-4">
-    <h2><?= esc($title ?? 'Customer Form') ?></h2>
+<section class="page-heading">
+    <h1><?= esc($title) ?></h1>
+</section>
 
-    <?php if (! empty($errors)): ?>
-        <div class="alert alert-danger">
-            <ul>
-                <?php foreach ($errors as $field => $message): ?>
-                    <li><?= esc($field) ?>: <?= esc($message) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
+<?php if (session()->getFlashdata('error')): ?><p class="alert error"><?= esc(session()->getFlashdata('error')) ?></p><?php endif; ?>
+<?php if (isset($validation) && $validation->getErrors()): ?><div class="alert error"><?= $validation->listErrors() ?></div><?php endif; ?>
 
-    <form method="post" action="<?= $mode === 'edit' ? site_url('customers/update/' . ($customer['id'] ?? 0)) : site_url('customers/create') ?>">
-        <?= csrf_field() ?>
-
-        <div class="form-group">
-            <label for="full_name">Full Name</label>
-            <input type="text" id="full_name" name="full_name" value="<?= esc($customer['full_name'] ?? '') ?>" required>
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="<?= esc($customer['email'] ?? '') ?>" required>
-        </div>
-
-        <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" id="phone" name="phone" value="<?= esc($customer['phone'] ?? '') ?>">
-        </div>
-
-        <div class="form-actions">
-            <button type="submit"><?= $mode === 'edit' ? 'Update Customer' : 'Save Customer' ?></button>
-            <a href="<?= base_url('customers') ?>" class="button button-secondary">Cancel</a>
-        </div>
-    </form>
-</div>
+<form action="<?= esc($action) ?>" method="post">
+    <?= csrf_field() ?>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" name="name" value="<?= old('name', $customer['full_name'] ?? '') ?>" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" value="<?= old('email', $customer['email'] ?? '') ?>" required>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" value="<?= old('phone', $customer['phone'] ?? '') ?>">
+    </div>
+    <button class="button" type="submit">Save Customer</button>
+    <a href="<?= base_url('customers') ?>">Cancel</a>
+</form>
 
 <?= $this->include('templates/footer') ?>

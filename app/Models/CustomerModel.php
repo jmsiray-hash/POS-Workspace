@@ -11,4 +11,5 @@ class CustomerModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $allowedFields    = ['full_name', 'email', 'phone', 'created_at'];
+    protected $useTimestamps    = false;
 }

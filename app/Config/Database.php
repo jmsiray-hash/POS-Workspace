@@ -26,7 +26,7 @@ class Database extends Config
         'DSN'          => '',
         'hostname'     => 'mysql-3af8d409-gsiray49-3918.k.aivencloud.com',
         'username'     => 'avnadmin',
-        'password'     => 'AVNS_6oduRy3fzhjOW0yOzkn',
+        'password'     => '',
         'database'     => 'defaultdb',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
@@ -87,14 +87,11 @@ class Database extends Config
     {
         parent::__construct();
 
-        $this->default['hostname'] = 'mysql-3af8d409-gsiray49-3918.k.aivencloud.com';
-        $this->default['username'] = 'avnadmin';
-        $this->default['password'] = 'AVNS_6oduRy3fzhjOW0yOzkn';
-        $this->default['database'] = 'defaultdb';
-        $this->default['port'] = (int) 14702;
-        $this->default['encrypt'] = [
-            'ssl_verify' => false,
-        ];
+        $this->default['hostname'] = env('database.default.hostname', $this->default['hostname']);
+        $this->default['username'] = env('database.default.username', $this->default['username']);
+        $this->default['password'] = env('database.default.password', $this->default['password']);
+        $this->default['database'] = env('database.default.database', $this->default['database']);
+        $this->default['port']     = (int) env('database.default.port', 14702);
 
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
