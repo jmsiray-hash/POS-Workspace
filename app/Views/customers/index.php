@@ -11,6 +11,7 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Created At</th>
             </tr>
         </thead>
         <tbody>
@@ -20,11 +21,12 @@
                         <td><?= esc($customer['full_name']) ?></td>
                         <td><?= esc($customer['email']) ?></td>
                         <td><?= esc($customer['phone']) ?></td>
+                        <td><?= esc($customer['created_at']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="3" class="text-center">No customers found.</td>
+                    <td colspan="4" class="text-center">No customers found.</td>
                 </tr>
             <?php endif; ?>
         </tbody>

@@ -8,17 +8,11 @@ class Users extends BaseController
 {
     public function index()
     {
-        $users = [
-            ['username' => 'asantos', 'full_name' => 'Avery Santos', 'role' => 'Administrator'],
-            ['username' => 'jreyes', 'full_name' => 'Jordan Reyes', 'role' => 'Manager'],
-            ['username' => 'mcruz', 'full_name' => 'Morgan Cruz', 'role' => 'Cashier'],
-            ['username' => 'clim', 'full_name' => 'Casey Lim', 'role' => 'Inventory Clerk'],
-            ['username' => 'tgarcia', 'full_name' => 'Taylor Garcia', 'role' => 'Cashier'],
-        ];
+        $model = new UserModel();
 
         return view('users/index', [
             'title' => 'Users',
-            'users' => $users,
+            'users' => $model->findAll(),
         ]);
     }
 
@@ -39,7 +33,6 @@ class Users extends BaseController
         $rules = [
             'username' => 'required|is_unique[users.username]',
             'full_name' => 'required',
-            'avatar' => 'permit_empty|uploaded[avatar]|is_image[avatar]|mime_in[avatar,image/jpg,image/jpeg,image/png]|max_size[avatar,2048]',
         ];
 
         if (! $this->validate($rules)) {
@@ -54,15 +47,9 @@ class Users extends BaseController
             ]);
         }
 
-        $avatar = $this->storeAvatar();
-        if ($avatar instanceof \CodeIgniter\HTTP\RedirectResponse) {
-            return $avatar;
-        }
-
         (new UserModel())->insert([
             'username' => $this->request->getPost('username'),
             'full_name' => $this->request->getPost('full_name'),
-            'avatar' => $avatar,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -96,7 +83,6 @@ class Users extends BaseController
         $rules = [
             'username' => 'required|is_unique[users.username,id,' . $id . ']',
             'full_name' => 'required',
-            'avatar' => 'permit_empty|uploaded[avatar]|is_image[avatar]|mime_in[avatar,image/jpg,image/jpeg,image/png]|max_size[avatar,2048]',
         ];
 
         if (! $this->validate($rules)) {
@@ -106,62 +92,16 @@ class Users extends BaseController
                 'user' => [
                     'username' => $this->request->getPost('username'),
                     'full_name' => $this->request->getPost('full_name'),
-                    'avatar' => $user['avatar'] ?? null,
                 ],
                 'validation' => $this->validator,
             ]);
         }
 
-        $avatar = $this->storeAvatar();
-        if ($avatar instanceof \CodeIgniter\HTTP\RedirectResponse) {
-            return $avatar;
-        }
-
-        $data = [
+        $model->update($id, [
             'username' => $this->request->getPost('username'),
             'full_name' => $this->request->getPost('full_name'),
-        ];
-
-        if ($avatar !== null) {
-            $this->deleteAvatar($user['avatar'] ?? null);
-            $data['avatar'] = $avatar;
-        }
-
-        $model->update($id, $data);
+        ]);
 
         return redirect()->to(base_url('users'))->with('message', 'User updated successfully.');
-    }
-
-    private function storeAvatar(): string|\CodeIgniter\HTTP\RedirectResponse|null
-    {
-        $file = $this->request->getFile('avatar');
-
-        if ($file === null || $file->getError() === UPLOAD_ERR_NO_FILE) {
-            return null;
-        }
-
-        if (! $file->isValid()) {
-            return redirect()->back()->withInput()->with('error', $file->getErrorString());
-        }
-
-        $directory = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'avatars';
-        if (! is_dir($directory) && ! mkdir($directory, 0755, true) && ! is_dir($directory)) {
-            return redirect()->back()->withInput()->with('error', 'Unable to create the avatar upload directory.');
-        }
-
-        $filename = $file->getRandomName();
-        $file->move($directory, $filename);
-
-        return $filename;
-    }
-
-    private function deleteAvatar(?string $filename): void
-    {
-        if ($filename !== null && basename($filename) === $filename) {
-            $path = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'avatars' . DIRECTORY_SEPARATOR . $filename;
-            if (is_file($path)) {
-                unlink($path);
-            }
-        }
     }
 }
