@@ -24,6 +24,7 @@
         label { display: block; font-weight: 700; margin-bottom: 6px; }
         input { border: 1px solid var(--line); border-radius: 5px; font: inherit; max-width: 520px; padding: 9px 10px; width: 100%; }
         .avatar { border-radius: 50%; height: 48px; object-fit: cover; width: 48px; }
+        .table-avatar { border-radius: 50%; display: block; height: 48px; object-fit: cover; width: 48px; }
         main { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: clamp(24px, 5vw, 56px); }
         h1 { color: var(--brand-dark); font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; margin: 0 0 16px; }
         h2 { color: var(--brand-dark); margin-top: 0; }
@@ -37,6 +38,12 @@
         .primary-button, .button { background: var(--brand); border: 0; border-radius: 6px; color: #fff; display: inline-block; font-weight: 600; padding: 10px 18px; text-decoration: none; }
         .button-secondary { background: #e2e8f0; color: var(--ink); }
         .action-link { color: var(--brand-dark); font-weight: 600; text-decoration: none; }
+        .row-action { border: 0; border-radius: 8px; display: inline-block; font: inherit; font-weight: 600; padding: 10px 16px; text-decoration: none; }
+        .row-action-edit { background: var(--brand); color: #fff; }
+        .row-action-delete { background: #c51e24; color: #fff; cursor: pointer; }
+        .row-action-edit:hover, .row-action-edit:focus { background: var(--brand-dark); }
+        .row-action-delete:hover, .row-action-delete:focus { background: #a9181d; }
+        .admin-badge { background: var(--wash); border-radius: 999px; color: var(--brand-dark); display: inline-block; font-size: .8rem; font-weight: 700; margin-left: 8px; padding: 3px 10px; }
         .alert { border-radius: 6px; margin-bottom: 18px; padding: 12px 14px; }
         .alert-success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
         .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
@@ -44,8 +51,9 @@
         label { display: block; font-weight: 600; margin-bottom: 6px; }
         input[type="text"], input[type="email"], input[type="file"] { border: 1px solid var(--line); border-radius: 6px; font: inherit; padding: 10px 12px; width: min(100%, 480px); }
         .form-actions { align-items: center; display: flex; gap: 12px; margin-top: 24px; }
-        .current-avatar, .thumbnail { align-items: center; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; display: inline-flex; height: 64px; justify-content: center; margin-top: 8px; overflow: hidden; width: 64px; }
-        .thumbnail { height: 46px; width: 46px; }
+        .current-avatar { align-items: center; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; display: flex; height: 180px; justify-content: center; margin: 8px 0; overflow: hidden; width: 180px; }
+        .current-avatar .avatar { border-radius: 8px; height: 100%; object-fit: cover; width: 100%; }
+        .thumbnail { align-items: center; background: #f8fafc; border: 1px solid var(--line); border-radius: 50%; display: inline-flex; height: 56px; justify-content: center; object-fit: cover; overflow: hidden; width: 56px; }
         footer { color: var(--muted); font-size: .9rem; padding: 20px 0; }
         @media (max-width: 640px) { .site-header { align-items: flex-start; flex-direction: column; gap: 12px; } .site-shell { padding: 16px; } .page-header { align-items: flex-start; flex-direction: column; } }
     </style>
@@ -60,6 +68,14 @@
             <a href="<?= base_url('about') ?>">About</a>
             <a href="<?= base_url('customers') ?>">Customers</a>
             <a href="<?= base_url('users') ?>">Users</a>
+            <?php if (session()->get('isLoggedIn')): ?>
+                <form action="<?= base_url('logout') ?>" method="post" style="display: inline;">
+                    <?= csrf_field() ?>
+                    <button class="button" type="submit">Logout</button>
+                </form>
+            <?php else: ?>
+                <a href="<?= base_url('login') ?>">Login</a>
+            <?php endif; ?>
         </nav>
     </header>
     <main>
