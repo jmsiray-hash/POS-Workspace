@@ -3,7 +3,7 @@
 
 A CodeIgniter POS application with validated customer and user forms, editing workflows, and avatar upload support.
 
-A database-backed CodeIgniter 4 web application deployed on Render and connected to a Railway MySQL database.
+A database-backed CodeIgniter 4 web application deployed on Render and connected to an Aiven MySQL database.
 
 ---
 
