@@ -1,22 +1,79 @@
-# IT0049 - Technical Formative Assessment 2
-## Point of Sale (POS) System Workspace
+# TFA6 POS Workspace
 
-A database-backed CodeIgniter 4 web application deployed on Render and connected to an Aiven MySQL Cloud Database.
+A Laravel 12 Point of Sale (POS) application for Technical Formative Assessment 6. The app uses Eloquent models and a relational database to display customer and user directories.
 
----
+## Requirements
 
-### 🌐 Live Hosted Links
-- **Customers Page:** [https://pos-workspace.onrender.com/customers](https://pos-workspace.onrender.com/customers)
-- **Users Page:** [https://pos-workspace.onrender.com/users](https://pos-workspace.onrender.com/users)
+- PHP 8.2 or newer
+- Composer
+- MySQL with the PDO MySQL PHP extension (XAMPP users can start MySQL from the XAMPP Control Panel)
 
----
+## Local setup
 
-### 🗄️ Database Export
-The database schema and sample seed records are exported in `schema.sql` located at the root of this repository.
+Open PowerShell or a terminal in the project root.
 
----
+1. Install PHP dependencies:
 
-### 💻 Local Setup Instructions
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/jmsiray-hash/pos-workspace.git](https://github.com/jmsiray-hash/pos-workspace.git)
+   ```powershell
+   composer install
+   ```
+
+2. Create the local environment file if it does not already exist. In PowerShell:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+   Keep an existing `.env` rather than overwriting your local settings.
+
+3. Create a MySQL database named `pos` (for example, in phpMyAdmin). Configure `.env` to match your local MySQL settings:
+
+   ```dotenv
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=pos
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+   The values above are typical XAMPP defaults. Use the credentials configured on your machine.
+
+4. Generate the Laravel application encryption key:
+
+   ```powershell
+   php artisan key:generate
+   ```
+
+5. Run the migrations and seed the database:
+
+   ```powershell
+   php artisan migrate --seed
+   ```
+
+   The seeder creates or updates five sample customers and five sample users, so it can safely be run again.
+
+   > **Warning:** `php artisan migrate:fresh --seed` drops all existing tables before recreating them. Use it only when you are comfortable deleting the data in the configured database.
+
+6. Start the Laravel development server:
+
+   ```powershell
+   php artisan serve
+   ```
+
+7. Open the app at <http://127.0.0.1:8000>.
+
+## Pages
+
+- Home: <http://127.0.0.1:8000/>
+- About: <http://127.0.0.1:8000/about>
+- Customers: <http://127.0.0.1:8000/customers>
+- Users: <http://127.0.0.1:8000/users>
+
+## Tests
+
+Run the feature test suite:
+
+```powershell
+composer test
+```
